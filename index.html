@@ -64,7 +64,9 @@
   .commune-head .nis{font-size:11px; color:var(--txt-dim); margin-top:6px; font-family:monospace}
   table.stats{width:100%; border-collapse:collapse}
   table.stats tr{border-bottom:1px solid var(--panel-2)}
-  table.stats tr.hl{background:rgba(30,58,138,.09)}
+  table.stats tr[data-key]{cursor:pointer; transition:background .12s}
+  table.stats tr[data-key]:hover{background:rgba(30,58,138,.07)}
+  table.stats tr.hl, table.stats tr.hl:hover{background:rgba(30,58,138,.12)}
   table.stats td{padding:9px 18px; font-size:13px; vertical-align:top}
   table.stats td.lbl{color:var(--txt-dim)}
   table.stats td.val{text-align:right; font-weight:650; white-space:nowrap; font-variant-numeric:tabular-nums}
@@ -295,7 +297,7 @@ function styleFor(feature){
   const sel = nis===selectedNis;
   return {
     fillColor: colorOf(v), fillOpacity: sel?.95:.82,
-    color: sel ? '#1e3a8a' : '#111111',
+    color: sel ? '#ffffff' : '#444444',
     weight: sel ? 3.5 : 1,
   };
 }
@@ -355,7 +357,7 @@ function renderCommune(nis){
     const pill = cls<0
       ? `<span class="pill empty">—</span>`
       : `<span class="pill" style="background:${COLORS[cls]};color:${(cls>=3)?'#fff':'#26303a'}">${fmt(v,c.dec)}</span>`;
-    rows+=`<tr class="${c.key===currentVar?'hl':''}">
+    rows+=`<tr class="${c.key===currentVar?'hl':''}" data-key="${c.key}" title="Cartographier cet indicateur">
       <td class="lbl">${c.label}</td>
       <td class="val">${pill}<span class="unit">${c.unit}</span>${chip}</td></tr>`;
   });
@@ -366,7 +368,14 @@ function renderCommune(nis){
       <div class="nis">Code NIS ${nis}</div>
     </div>
     <table class="stats">${rows}</table>
-    <div class="legend-note" style="padding:11px 18px">Chaque valeur est colorée selon son quintile (clair = faible → foncé = élevé). L'indicateur cartographié est surligné ; ▲/▼ indiquent le sens de l'évolution 2024→2025.</div>`;
+    <div class="legend-note" style="padding:11px 18px">Cliquez une ligne pour cartographier cet indicateur. Chaque valeur est colorée selon son quintile (clair = faible → foncé = élevé) ; ▲/▼ indiquent le sens de l'évolution 2024→2025.</div>`;
+  panel.querySelectorAll('table.stats tr[data-key]').forEach(tr=>{
+    tr.addEventListener('click',()=>{
+      currentVar=tr.dataset.key;
+      const sel=document.getElementById('varSelect'); if(sel) sel.value=currentVar;
+      refresh();
+    });
+  });
   geoLayer.setStyle(styleFor);
   if(layersByNis[nis]) layersByNis[nis].bringToFront();
   updateDetailsButton();
