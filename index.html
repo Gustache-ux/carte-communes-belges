@@ -9,9 +9,9 @@
 <style>
   :root{
     --bg:#f1f0ec; --panel:#ffffff; --panel-2:#f4f4f2; --line:#e3e2dd;
-    --txt:#26303a; --txt-dim:#73798a; --accent:#0e8c7f; --accent-soft:#13a394; --accent-dk:#0a6b60;
+    --txt:#26303a; --txt-dim:#73798a; --accent:#1e3a8a; --accent-soft:#25459c; --accent-dk:#15275c;
     --prov:#3a4654;
-    --c1:#2166ac; --c2:#92c5de; --c3:#f7f7f7; --c4:#f4a582; --c5:#b2182b;
+    --c1:#ffffb2; --c2:#fecc5c; --c3:#fd8d3c; --c4:#f03b20; --c5:#bd0026;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
@@ -58,13 +58,13 @@
   .commune-panel{flex:1; overflow-y:auto; padding:0}
   .placeholder{padding:40px 22px; text-align:center; color:var(--txt-dim); font-size:13px; line-height:1.6}
   .placeholder svg{opacity:.4; margin-bottom:14px; color:var(--accent)}
-  .commune-head{padding:18px; background:linear-gradient(135deg,#eafaf7,#f3f7f6); border-bottom:1px solid var(--line)}
+  .commune-head{padding:18px; background:linear-gradient(135deg,#eaf0fb,#f3f6fc); border-bottom:1px solid var(--line)}
   .commune-head .name{font-size:21px; font-weight:750}
   .commune-head .prov{font-size:12.5px; color:var(--accent-dk); margin-top:3px; font-weight:600}
   .commune-head .nis{font-size:11px; color:var(--txt-dim); margin-top:6px; font-family:monospace}
   table.stats{width:100%; border-collapse:collapse}
   table.stats tr{border-bottom:1px solid var(--panel-2)}
-  table.stats tr.hl{background:rgba(14,140,127,.10)}
+  table.stats tr.hl{background:rgba(30,58,138,.09)}
   table.stats td{padding:9px 18px; font-size:13px; vertical-align:top}
   table.stats td.lbl{color:var(--txt-dim)}
   table.stats td.val{text-align:right; font-weight:650; white-space:nowrap; font-variant-numeric:tabular-nums}
@@ -116,7 +116,7 @@
   table.leg th{text-align:left; padding:8px 10px; color:var(--txt-dim); font-size:11px; text-transform:uppercase; letter-spacing:.5px; border-bottom:2px solid var(--line)}
   table.leg td{padding:8px 10px; border-bottom:1px solid var(--panel-2); line-height:1.45; vertical-align:top}
   table.leg td.k{font-weight:650; white-space:nowrap; color:var(--accent-dk)}
-  .note-box{background:#f7faf9; border:1px solid #dcebe8; border-left:3px solid var(--accent); border-radius:8px; padding:14px 16px; font-size:13px; line-height:1.6; color:#3c4654}
+  .note-box{background:#f6f8fc; border:1px solid #e2e8f3; border-left:3px solid var(--accent); border-radius:8px; padding:14px 16px; font-size:13px; line-height:1.6; color:#3c4654}
   .src-list{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px}
   .src-list span{background:var(--panel-2); padding:5px 12px; border-radius:20px; border:1px solid var(--line); font-size:12.5px; font-weight:600}
   /* Barre indicateur + contenu (base desktop) */
@@ -229,12 +229,12 @@
     <div class="modal-body">
       <h3>Code couleur de la carte</h3>
       <p>Pour chaque indicateur, les communes sont réparties en cinq classes d'effectif égal (quintiles).
-         Le dégradé va du bleu (valeurs les plus faibles) au rouge (valeurs les plus élevées) :</p>
+         Le dégradé va du ton clair (valeurs les plus faibles) au ton foncé (valeurs les plus élevées) :</p>
       <div class="color-scale">
-        <div style="background:var(--c1);color:#fff">&lt; Q1</div>
+        <div style="background:var(--c1)">&lt; Q1</div>
         <div style="background:var(--c2)">Q1–Q2</div>
         <div style="background:var(--c3)">Q2–Q3</div>
-        <div style="background:var(--c4)">Q3–Q4</div>
+        <div style="background:var(--c4);color:#fff">Q3–Q4</div>
         <div style="background:var(--c5);color:#fff">&gt; Q4</div>
       </div>
 
@@ -260,8 +260,8 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
-const COLORS = ['#2166ac','#92c5de','#f7f7f7','#f4a582','#b2182b'];
-const NEUTRAL = '#cfd4d8';
+const COLORS = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026'];
+const NEUTRAL = '#d9dcdf';
 let META, STATS, GEO, PROVGEO, geoLayer, provLayer, currentVar, breaks=[], allBreaks={}, layersByNis={}, selectedNis=null;
 
 function fmt(v, dec){
@@ -354,7 +354,7 @@ function renderCommune(nis){
     const cls=classForVar(c.key,v);
     const pill = cls<0
       ? `<span class="pill empty">—</span>`
-      : `<span class="pill" style="background:${COLORS[cls]};color:${(cls===0||cls===4)?'#fff':'#26303a'}">${fmt(v,c.dec)}</span>`;
+      : `<span class="pill" style="background:${COLORS[cls]};color:${(cls>=3)?'#fff':'#26303a'}">${fmt(v,c.dec)}</span>`;
     rows+=`<tr class="${c.key===currentVar?'hl':''}">
       <td class="lbl">${c.label}</td>
       <td class="val">${pill}<span class="unit">${c.unit}</span>${chip}</td></tr>`;
@@ -366,7 +366,7 @@ function renderCommune(nis){
       <div class="nis">Code NIS ${nis}</div>
     </div>
     <table class="stats">${rows}</table>
-    <div class="legend-note" style="padding:11px 18px">Chaque valeur est colorée selon son quintile (bleu = faible → rouge = élevé). L'indicateur cartographié est surligné ; ▲/▼ indiquent le sens de l'évolution 2024→2025.</div>`;
+    <div class="legend-note" style="padding:11px 18px">Chaque valeur est colorée selon son quintile (clair = faible → foncé = élevé). L'indicateur cartographié est surligné ; ▲/▼ indiquent le sens de l'évolution 2024→2025.</div>`;
   geoLayer.setStyle(styleFor);
   if(layersByNis[nis]) layersByNis[nis].bringToFront();
   updateDetailsButton();
