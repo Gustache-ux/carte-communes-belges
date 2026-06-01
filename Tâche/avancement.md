@@ -26,9 +26,11 @@ Dernière mise à jour : 1er juin 2026
 ## 🔲 À faire
 
 - [x] Dépôt GitHub créé et code poussé → https://github.com/Gustache-ux/carte-communes-belges
-- [ ] **Importer le dépôt dans Vercel** (étape manuelle, voir guide ci-dessous)
+- [x] **Site mis en ligne sur Vercel** ✅ (déploiement auto à chaque push) — _URL `.vercel.app` à coller ici_
 - [ ] Acheter / configurer un nom de domaine (optionnel)
 - [ ] Relecture des libellés et unités avec l'auteur du TFE
+- [ ] (Optionnel) Ajouter les 3 régions (Flandre / Wallonie / Bruxelles) si fond fourni
+- [ ] (Optionnel) Mini-légende des couleurs directement sur la carte en mode mobile
 
 ---
 
@@ -55,11 +57,23 @@ Ensuite, **chaque modification poussée sur GitHub se redéploie automatiquement
 - [x] Refonte graphique : thème clair, accent sarcelle/vert (le bleu reste réservé aux données)
 - [x] Correction du libellé de la province de Liège
 
+## ✅ Peaufinage visuel & mobile (1er juin 2026, suite)
+
+- [x] Titre du site : « Communes belges : Où sont les kinés ? »
+- [x] Libellés des indicateurs explicités (abréviations développées, IPEC/IPGC définis)
+- [x] Statistiques colorées par quintile dans le panneau (pastilles, code couleur de l'Excel)
+- [x] Contour survol/sélection en gris foncé `#2D2F33` (épaisseurs 1,8 / 3,5)
+- [x] Bordures des communes en gris moyen `#8a9099` (épaisseur 1)
+- [x] Frontières de provinces dans un calque dédié (toujours au premier plan), trait foncé `#2b3340`
+- [x] Version mobile : carte plein écran, panneau en bottom sheet ouvert via bouton « Détails »
+      (sélection commune et changement d'indicateur gardent la carte en grand)
+
 ## 💡 Améliorations possibles (optionnel)
 
 - Bouton d'export de la carte en image (PNG) pour le mémoire
 - Comparaison côte à côte de deux indicateurs
 - Mode impression
+- Dégradé centré sur zéro pour les indicateurs d'évolution
 
 ---
 
