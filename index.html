@@ -68,7 +68,10 @@
   table.stats td{padding:9px 18px; font-size:13px; vertical-align:top}
   table.stats td.lbl{color:var(--txt-dim)}
   table.stats td.val{text-align:right; font-weight:650; white-space:nowrap; font-variant-numeric:tabular-nums}
-  table.stats td.val .unit{color:var(--txt-dim); font-weight:400; font-size:11px; margin-left:3px}
+  table.stats td.val .unit{color:var(--txt-dim); font-weight:400; font-size:11px; margin-left:4px}
+  .pill{display:inline-block; min-width:50px; text-align:center; padding:2px 9px; border-radius:6px;
+    font-weight:650; font-variant-numeric:tabular-nums; border:1px solid rgba(0,0,0,.10)}
+  .pill.empty{background:transparent; border:none; color:var(--txt-dim); font-weight:400}
   .chip{display:inline-block; padding:1px 6px; border-radius:5px; font-size:11px; margin-left:6px}
   .chip.up{background:rgba(16,160,120,.16); color:#0a8f5e}
   .chip.down{background:rgba(220,70,70,.16); color:#c23b3b}
@@ -208,7 +211,7 @@
 <script>
 const COLORS = ['#2166ac','#92c5de','#f7f7f7','#f4a582','#b2182b'];
 const NEUTRAL = '#cfd4d8';
-let META, STATS, GEO, PROVGEO, geoLayer, provLayer, currentVar, breaks=[], layersByNis={}, selectedNis=null;
+let META, STATS, GEO, PROVGEO, geoLayer, provLayer, currentVar, breaks=[], allBreaks={}, layersByNis={}, selectedNis=null;
 
 function fmt(v, dec){
   if(v===null||v===undefined||isNaN(v)) return '—';
@@ -229,6 +232,11 @@ function classOf(v){
   return 4;
 }
 function colorOf(v){const c=classOf(v); return c<0?NEUTRAL:COLORS[c];}
+function classForVar(key,v){
+  if(v===null||v===undefined||isNaN(v)) return -1;
+  const b=allBreaks[key]; if(!b) return -1;
+  if(v<b[0]) return 0; if(v<b[1]) return 1; if(v<b[2]) return 2; if(v<b[3]) return 3; return 4;
+}
 
 function styleFor(feature){
   const nis=feature.properties.nis;
@@ -292,9 +300,13 @@ function renderCommune(nis){
     if(isEvol && v!==null && !isNaN(v)){
       chip = v>0 ? `<span class="chip up">▲</span>` : (v<0 ? `<span class="chip down">▼</span>` : '');
     }
+    const cls=classForVar(c.key,v);
+    const pill = cls<0
+      ? `<span class="pill empty">—</span>`
+      : `<span class="pill" style="background:${COLORS[cls]};color:${(cls===0||cls===4)?'#fff':'#26303a'}">${fmt(v,c.dec)}</span>`;
     rows+=`<tr class="${c.key===currentVar?'hl':''}">
       <td class="lbl">${c.label}</td>
-      <td class="val">${fmt(v,c.dec)}<span class="unit">${c.unit}</span>${chip}</td></tr>`;
+      <td class="val">${pill}<span class="unit">${c.unit}</span>${chip}</td></tr>`;
   });
   panel.innerHTML=`
     <div class="commune-head">
@@ -303,7 +315,7 @@ function renderCommune(nis){
       <div class="nis">Code NIS ${nis}</div>
     </div>
     <table class="stats">${rows}</table>
-    <div class="legend-note" style="padding:11px 18px">L'indicateur cartographié est surligné. ▲/▼ indiquent le sens de l'évolution 2024→2025.</div>`;
+    <div class="legend-note" style="padding:11px 18px">Chaque valeur est colorée selon son quintile (bleu = faible → rouge = élevé). L'indicateur cartographié est surligné ; ▲/▼ indiquent le sens de l'évolution 2024→2025.</div>`;
   geoLayer.setStyle(styleFor);
   if(layersByNis[nis]) layersByNis[nis].bringToFront();
 }
@@ -376,6 +388,11 @@ async function init(){
   ]);
   STATS=statsData; META=statsData.meta; GEO=geoData; PROVGEO=provData;
   currentVar=META.columns[0].key;
+  // Quintiles précalculés pour chaque indicateur (sert à colorer les pastilles)
+  META.columns.forEach(c=>{
+    const vals=Object.values(STATS.stats).map(s=>s.v[c.key]).filter(v=>v!==null&&!isNaN(v));
+    allBreaks[c.key]=quantileBreaks(vals);
+  });
 
   geoLayer=L.geoJSON(GEO,{
     style:styleFor,
