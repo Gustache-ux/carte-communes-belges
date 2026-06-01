@@ -25,9 +25,24 @@ Dernière mise à jour : 1er juin 2026
 
 ## 🔲 À faire
 
-- [ ] **Mise en ligne** (choix de la méthode : Vercel / GitHub Pages — voir ci-dessous)
+- [x] Dépôt GitHub créé et code poussé → https://github.com/Gustache-ux/carte-communes-belges
+- [ ] **Importer le dépôt dans Vercel** (étape manuelle, voir guide ci-dessous)
 - [ ] Acheter / configurer un nom de domaine (optionnel)
 - [ ] Relecture des libellés et unités avec l'auteur du TFE
+
+---
+
+## 🚀 Mise en ligne sur Vercel (à faire par Jérémie)
+
+Le code est déjà sur GitHub. Pour le publier :
+
+1. Aller sur **https://vercel.com/new**
+2. Se connecter avec le compte GitHub (Gustache-ux)
+3. Dans la liste des dépôts, choisir **`carte-communes-belges`** → cliquer **Import**
+4. Laisser tous les réglages par défaut (Framework Preset = « Other », pas de build) → cliquer **Deploy**
+5. Au bout de ~30 s, Vercel donne une URL en `…vercel.app` : le site est en ligne.
+
+Ensuite, **chaque modification poussée sur GitHub se redéploie automatiquement** (comme pour le site kiné).
 
 ---
 
