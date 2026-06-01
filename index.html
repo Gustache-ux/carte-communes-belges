@@ -236,8 +236,8 @@ function styleFor(feature){
   const sel = nis===selectedNis;
   return {
     fillColor: colorOf(v), fillOpacity: sel?.95:.82,
-    color: sel ? '#0a6b60' : '#ffffff',
-    weight: sel ? 3 : 0.4,
+    color: sel ? '#0b0f14' : '#ffffff',
+    weight: sel ? 4.5 : 0.4,
   };
 }
 
@@ -305,6 +305,7 @@ function renderCommune(nis){
     <table class="stats">${rows}</table>
     <div class="legend-note" style="padding:11px 18px">L'indicateur cartographié est surligné. ▲/▼ indiquent le sens de l'évolution 2024→2025.</div>`;
   geoLayer.setStyle(styleFor);
+  if(layersByNis[nis]) layersByNis[nis].bringToFront();
 }
 const PROV={'ANT':'Province d\'Anvers','BF':'Brabant flamand','BW':'Brabant wallon','BXL':'Bruxelles-Capitale',
   'F-Occ':'Flandre occidentale','F-Or':'Flandre orientale','HAI':'Hainaut','LIÈ':'Province de Liège',
@@ -381,8 +382,8 @@ async function init(){
     onEachFeature:(f,layer)=>{
       const nis=f.properties.nis; layersByNis[nis]=layer;
       layer.bindTooltip(()=>tooltipHtml(nis),{className:'commune-tip',sticky:true});
-      layer.on('mouseover',()=>{if(nis!==selectedNis)layer.setStyle({weight:1.4,color:'#0e8c7f'});});
-      layer.on('mouseout',()=>{geoLayer.setStyle(styleFor);});
+      layer.on('mouseover',()=>{if(nis!==selectedNis){layer.setStyle({weight:2.8,color:'#15191e'}); layer.bringToFront();}});
+      layer.on('mouseout',()=>{geoLayer.setStyle(styleFor); if(selectedNis&&layersByNis[selectedNis])layersByNis[selectedNis].bringToFront();});
       layer.on('click',()=>{renderCommune(nis);}); // sélection seule, pas de zoom
     }
   }).addTo(map);
