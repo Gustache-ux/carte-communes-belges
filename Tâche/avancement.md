@@ -46,12 +46,20 @@ Ensuite, **chaque modification poussée sur GitHub se redéploie automatiquement
 
 ---
 
+## ✅ Peaufinage (1er juin 2026)
+
+- [x] Frontières des provinces ajoutées en surcouche (11 provinces, fichier `data/provinces.geojson`)
+- [x] Clic sur une commune = sélection seule (plus de zoom automatique)
+- [x] Fenêtre « Méthodologie & légende » : code couleur, légende des 14 indicateurs, note méthodologique INAMI
+- [x] Sources affichées en pied de page (Statbel, INAMI, SPF Intérieur, Atlas de Belgique)
+- [x] Refonte graphique : thème clair, accent sarcelle/vert (le bleu reste réservé aux données)
+- [x] Correction du libellé de la province de Liège
+
 ## 💡 Améliorations possibles (optionnel)
 
 - Bouton d'export de la carte en image (PNG) pour le mémoire
 - Comparaison côte à côte de deux indicateurs
-- Mode clair / impression
-- Affichage des frontières de provinces
+- Mode impression
 
 ---
 
