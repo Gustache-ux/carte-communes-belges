@@ -236,7 +236,7 @@ function styleFor(feature){
   const sel = nis===selectedNis;
   return {
     fillColor: colorOf(v), fillOpacity: sel?.95:.82,
-    color: sel ? '#E6007E' : '#ffffff',
+    color: sel ? '#2D2F33' : '#ffffff',
     weight: sel ? 3.5 : 0.4,
   };
 }
@@ -382,7 +382,7 @@ async function init(){
     onEachFeature:(f,layer)=>{
       const nis=f.properties.nis; layersByNis[nis]=layer;
       layer.bindTooltip(()=>tooltipHtml(nis),{className:'commune-tip',sticky:true});
-      layer.on('mouseover',()=>{if(nis!==selectedNis){layer.setStyle({weight:1.8,color:'#E6007E'}); layer.bringToFront();}});
+      layer.on('mouseover',()=>{if(nis!==selectedNis){layer.setStyle({weight:1.8,color:'#2D2F33'}); layer.bringToFront();}});
       layer.on('mouseout',()=>{geoLayer.setStyle(styleFor); if(selectedNis&&layersByNis[selectedNis])layersByNis[selectedNis].bringToFront();});
       layer.on('click',()=>{renderCommune(nis);}); // sélection seule, pas de zoom
     }
