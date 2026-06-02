@@ -18,7 +18,7 @@
   body{
     font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
     background:var(--bg); color:var(--txt); overflow:hidden;
-    display:flex; flex-direction:column; height:100vh;
+    display:flex; flex-direction:column; height:100vh; height:100dvh;
   }
   header{
     padding:13px 22px; background:var(--panel); border-bottom:1px solid var(--line);
@@ -139,7 +139,6 @@
 
   /* ===== Version mobile : carte plein écran + panneau ouvert au bouton ===== */
   @media(max-width:820px){
-    body{overflow:hidden}
     header{padding:10px 14px; gap:10px}
     header h1{font-size:15.5px; line-height:1.25}
     header .sub{display:none}
@@ -148,29 +147,31 @@
     .main{flex-direction:column; position:relative}
     #map{flex:1; min-height:0; height:auto; z-index:1}
     .sidebar{
-      position:relative; width:100%; height:auto; max-height:86vh; flex:none;
+      position:relative; width:100%; height:auto; flex:none;
       border-left:none; border-top:none; border-radius:18px 18px 0 0;
-      box-shadow:0 -8px 26px rgba(0,0,0,.14); z-index:2; overflow:hidden;
+      box-shadow:0 -8px 26px rgba(0,0,0,.16); z-index:2; overflow:hidden;
+      display:flex; flex-direction:column;
     }
-    .sheet-bar{padding:10px 13px; align-items:center; gap:10px; background:var(--panel)}
+    .sidebar.expanded{height:85dvh; max-height:85dvh}
+    .sheet-bar{flex-direction:column; align-items:stretch; gap:9px; padding:10px 14px 12px; background:var(--panel); flex:none}
     .sheet-bar .sel-wrap h2{font-size:9.5px; margin-bottom:5px}
-    .sheet-bar select{padding:9px 10px; font-size:14px}
+    .sheet-bar select{padding:10px 11px; font-size:14px}
     .details-btn{
-      display:inline-flex; align-items:center; gap:7px; flex:none; max-width:46%;
-      padding:11px 14px; border:none; border-radius:11px; background:var(--accent); color:#fff;
-      font-size:13.5px; font-weight:700; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; gap:8px; width:100%;
+      padding:13px 14px; border:none; border-radius:12px; background:var(--accent); color:#fff;
+      font-size:14.5px; font-weight:700; cursor:pointer; box-shadow:0 3px 10px rgba(30,58,138,.28);
     }
     .details-btn span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-    .details-btn .chev{font-size:10px; transition:transform .22s; flex:none}
+    .details-btn .chev{font-size:11px; transition:transform .22s; flex:none}
     .sidebar.expanded .details-btn .chev{transform:rotate(180deg)}
-    .sheet-content{display:none; position:relative}
-    .sidebar.expanded .sheet-content{display:block; flex:none; overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:calc(86vh - 66px)}
+    .sheet-content{display:none}
+    .sidebar.expanded .sheet-content{display:block; flex:1 1 auto; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch}
     .panel-section{padding:13px 16px}
     .commune-panel{overflow:visible; flex:none}
     .commune-head{padding:16px}
     table.stats td{padding:10px 16px}
     .footer{display:none}
-    .modal{border-radius:14px; max-height:90vh}
+    .modal{border-radius:14px; max-height:90dvh}
     .modal-body{padding:18px}
   }
   @media(max-width:380px){
